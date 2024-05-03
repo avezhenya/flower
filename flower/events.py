@@ -107,7 +107,12 @@ class EventsState(State):
                 self.metrics.worker_number_of_currently_executing_tasks.labels(worker_name).set(num_executing_tasks)
 
         if event_type == 'worker-offline':
-            self.metrics.worker_online.labels(worker_name).set(0)
+            self.metrics.events.remove(worker_name)
+            self.metrics.runtime.remove(worker_name)
+            self.metrics.prefetch_time.remove(worker_name)
+            self.metrics.number_of_prefetched_tasks.remove(worker_name)
+            self.metrics.worker_online.remove(worker_name)
+            self.metrics.worker_number_of_currently_executing_tasks.remove(worker_name)
 
 
 class Events(threading.Thread):
